@@ -16,7 +16,7 @@ const withDrawer = Component => ({ drawerProps, ...props }) => {
   }, [drawerRaw]);
   return (
     <DrawerLayout renderNavigationView={renderNavigationView} ref={drawerRaw} {...drawerProps}>
-      <Component {...props} openDrawer={drawer && drawer.openDrawer} />
+      <Component {...props} openDrawer={drawer ? drawer.openDrawer : () => {}} />
     </DrawerLayout>
   );
 };

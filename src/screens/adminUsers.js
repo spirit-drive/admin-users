@@ -31,10 +31,8 @@ const AdminUsersScreen = ({ users, setUsers, openDrawer }) => {
   }, []);
 
   useEffect(() => {
-    if (!error) {
-      setSearchResult(miniSearch(users, searchValue, ['name', 'username']));
-    }
-  }, [searchValue]);
+    setSearchResult(miniSearch(users, searchValue, ['name', 'username']));
+  }, [error === null && searchValue]);
 
   if (loading) {
     return <Loading />;
@@ -62,13 +60,13 @@ const AdminUsersScreen = ({ users, setUsers, openDrawer }) => {
 };
 
 AdminUsersScreen.propTypes = {
-  users: PropTypes.array.isRequired,
+  users: PropTypes.array,
   setUsers: PropTypes.func.isRequired,
-  openDrawer: PropTypes.func,
+  openDrawer: PropTypes.func.isRequired,
 };
 
 AdminUsersScreen.defaultProps = {
-  openDrawer: () => {},
+  users: [],
 };
 
 const enhance = connect(
