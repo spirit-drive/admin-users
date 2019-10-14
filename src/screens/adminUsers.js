@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { SearchBar, Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
+import { View, KeyboardAvoidingView, Text, SafeAreaView, StyleSheet } from 'react-native';
 import { BaseButton } from 'react-native-gesture-handler';
 import miniSearch from '../utils/miniSearch';
 import Loading from '../components/Loading';
@@ -39,14 +39,12 @@ const AdminUsersScreen = ({ users, setUsers, openDrawer }) => {
   }
 
   return (
-    <View style={styles.root}>
-      <SafeAreaView>
+    <KeyboardAvoidingView style={styles.full} behavior="padding" enabled>
+      <SafeAreaView style={styles.full}>
         <View style={styles.top}>
-          <View style={styles.openMenu}>
-            <BaseButton onPress={openDrawer}>
-              <Icon name="menu" color="#86939d" />
-            </BaseButton>
-          </View>
+          <BaseButton style={styles.openMenu} onPress={openDrawer}>
+            <Icon name="menu" color="#86939d" />
+          </BaseButton>
           <SearchBar
             containerStyle={styles.search}
             inputContainerStyle={styles.searchContainer}
@@ -58,7 +56,7 @@ const AdminUsersScreen = ({ users, setUsers, openDrawer }) => {
         {error && <Text>{error}</Text>}
         <TableUsers data={searchValue ? searchResult : users} />
       </SafeAreaView>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -78,27 +76,29 @@ const enhance = connect(
 );
 
 const styles = StyleSheet.create({
-  root: {
+  full: {
     flex: 1,
   },
   top: {
+    paddingLeft: 8,
     flexDirection: 'row',
-  },
-  openMenu: {
-    padding: 5,
-    paddingLeft: 12,
-    alignItems: 'stretch',
-    justifyContent: 'center',
     borderStyle: 'solid',
     borderBottomWidth: 1,
     borderTopWidth: 1,
     borderColor: '#e1e1e1',
+  },
+  openMenu: {
+    padding: 5,
+    alignItems: 'stretch',
+    justifyContent: 'center',
   },
   searchContainer: {
     backgroundColor: '#e4ecf5',
   },
   search: {
     flex: 1,
+    borderBottomWidth: 0,
+    borderTopWidth: 0,
     backgroundColor: '#fff',
   },
 });
