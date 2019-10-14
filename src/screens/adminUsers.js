@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { SearchBar } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { actions } from '../store/users';
@@ -28,6 +29,7 @@ const AdminUsersScreen = ({ users, setUsers }) => {
 
   return (
     <View style={{ flex: 1 }}>
+      <SearchBar />
       <Text>AdminUsersScreen</Text>
       {error && <Text>{error}</Text>}
       <Text>{JSON.stringify(users, null, 2)}</Text>
