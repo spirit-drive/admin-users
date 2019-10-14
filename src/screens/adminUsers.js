@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { SearchBar } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { ScrollView, View, Text, ActivityIndicator } from 'react-native';
+import miniSearch from '../utils/miniSearch';
 import { actions } from '../store/users';
 
 const AdminUsersScreen = ({ users, setUsers }) => {
   const [error, setError] = useState(null);
+  const [searchResult, setSearchResult] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
   const [loading, setLoading] = useState(!users.length);
   useEffect(() => {
     fetch('https://jsonplaceholder.typicode.com/users')
@@ -23,16 +26,21 @@ const AdminUsersScreen = ({ users, setUsers }) => {
       });
   }, []);
 
+  useEffect(() => {
+    setSearchResult(miniSearch(users, searchValue, ['name', 'username']));
+  }, [searchValue]);
+
   if (loading) {
     return <ActivityIndicator />;
   }
 
   return (
     <View style={{ flex: 1 }}>
-      <SearchBar />
-      <Text>AdminUsersScreen</Text>
-      {error && <Text>{error}</Text>}
-      <Text>{JSON.stringify(users, null, 2)}</Text>
+      <SearchBar value={searchValue} onChangeText={setSearchValue} />
+      <ScrollView>
+        {error && <Text>{error}</Text>}
+        <Text>{JSON.stringify(searchValue ? searchResult : users, null, 2)}</Text>
+      </ScrollView>
     </View>
   );
 };
