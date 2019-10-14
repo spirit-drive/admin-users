@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { View, Text } from 'react-native';
+import { View, Text, ActivityIndicator } from 'react-native';
 import { actions } from '../store/users';
 
 const AdminUsersScreen = ({ users, setUsers }) => {
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(!users.length);
   useEffect(() => {
     fetch('https://jsonplaceholder.typicode.com/users')
       .then(res => {
         const { ok } = res;
         setError(ok ? null : 'Ошибка, повторите попытку позже');
+        setLoading(false);
         return res.json();
       })
       .then(res => {
@@ -19,6 +21,11 @@ const AdminUsersScreen = ({ users, setUsers }) => {
         }
       });
   }, []);
+
+  if (loading) {
+    return <ActivityIndicator />;
+  }
+
   return (
     <View style={{ flex: 1 }}>
       <Text>AdminUsersScreen</Text>
