@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { SearchBar } from 'react-native-elements';
+import { SearchBar, Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
+import { BaseButton } from 'react-native-gesture-handler';
 import miniSearch from '../utils/miniSearch';
 import Loading from '../components/Loading';
 import TableUsers from '../components/TableUsers';
 import { actions } from '../store/users';
+import withDrawer from '../hocs/withDrawer';
 
-const AdminUsersScreen = ({ users, setUsers }) => {
+const AdminUsersScreen = ({ users, setUsers, openDrawer }) => {
   const [error, setError] = useState(null);
   const [searchResult, setSearchResult] = useState([]);
   const [searchValue, setSearchValue] = useState('');
@@ -39,13 +41,20 @@ const AdminUsersScreen = ({ users, setUsers }) => {
   return (
     <View style={styles.root}>
       <SafeAreaView>
-        <SearchBar
-          containerStyle={styles.search}
-          inputContainerStyle={styles.searchContainer}
-          lightTheme
-          value={searchValue}
-          onChangeText={setSearchValue}
-        />
+        <View style={styles.top}>
+          <View style={styles.openMenu}>
+            <BaseButton onPress={openDrawer}>
+              <Icon name="menu" color="#86939d" />
+            </BaseButton>
+          </View>
+          <SearchBar
+            containerStyle={styles.search}
+            inputContainerStyle={styles.searchContainer}
+            lightTheme
+            value={searchValue}
+            onChangeText={setSearchValue}
+          />
+        </View>
         {error && <Text>{error}</Text>}
         <TableUsers data={searchValue ? searchResult : users} />
       </SafeAreaView>
@@ -56,10 +65,11 @@ const AdminUsersScreen = ({ users, setUsers }) => {
 AdminUsersScreen.propTypes = {
   users: PropTypes.array.isRequired,
   setUsers: PropTypes.func.isRequired,
+  openDrawer: PropTypes.func,
 };
 
-AdminUsersScreen.navigationOptions = {
-  header: null,
+AdminUsersScreen.defaultProps = {
+  openDrawer: () => {},
 };
 
 const enhance = connect(
@@ -71,12 +81,35 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
   },
+  top: {
+    flexDirection: 'row',
+  },
+  openMenu: {
+    padding: 5,
+    paddingLeft: 12,
+    alignItems: 'stretch',
+    justifyContent: 'center',
+    borderStyle: 'solid',
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
+    borderColor: '#e1e1e1',
+  },
   searchContainer: {
     backgroundColor: '#e4ecf5',
   },
   search: {
+    flex: 1,
     backgroundColor: '#fff',
   },
 });
 
-export default enhance(AdminUsersScreen);
+const EnhancedAdminUsersScreen = withDrawer(enhance(AdminUsersScreen));
+
+EnhancedAdminUsersScreen.navigationOptions = {
+  headerTitle: 'Admin Users',
+  headerStyle: {
+    borderBottomWidth: 0,
+  },
+};
+
+export default EnhancedAdminUsersScreen;
