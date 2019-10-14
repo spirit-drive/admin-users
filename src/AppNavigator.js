@@ -1,10 +1,10 @@
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-import UsersScreen from './screens/users';
+import AdminUsersScreen from './screens/adminUsers';
 
 const AppNavigator = createStackNavigator({
   Home: {
-    screen: UsersScreen,
+    screen: AdminUsersScreen,
   },
 });
 

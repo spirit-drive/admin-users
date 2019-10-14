@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-const UsersScreen = () => (
+const AdminUsersScreen = () => (
   <View style={{ flex: 1 }}>
-    <Text>UsersScreen</Text>
+    <Text>AdminUsersScreen</Text>
   </View>
 );
 
-export default UsersScreen;
+export default AdminUsersScreen;
