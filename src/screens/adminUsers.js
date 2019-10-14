@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { SearchBar } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { ScrollView, View, Text, SafeAreaView } from 'react-native';
+import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
 import miniSearch from '../utils/miniSearch';
 import Loading from '../components/Loading';
+import TableUsers from '../components/TableUsers';
 import { actions } from '../store/users';
 
 const AdminUsersScreen = ({ users, setUsers }) => {
@@ -36,14 +37,18 @@ const AdminUsersScreen = ({ users, setUsers }) => {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.root}>
       <SafeAreaView>
-        <SearchBar value={searchValue} onChangeText={setSearchValue} />
-      </SafeAreaView>
-      <ScrollView>
+        <SearchBar
+          containerStyle={styles.search}
+          inputContainerStyle={styles.searchContainer}
+          lightTheme
+          value={searchValue}
+          onChangeText={setSearchValue}
+        />
         {error && <Text>{error}</Text>}
-        <Text>{JSON.stringify(searchValue ? searchResult : users, null, 2)}</Text>
-      </ScrollView>
+        <TableUsers data={searchValue ? searchResult : users} />
+      </SafeAreaView>
     </View>
   );
 };
@@ -61,5 +66,17 @@ const enhance = connect(
   state => ({ users: state.users }),
   dispatch => ({ setUsers: users => dispatch(actions.setUsers(users)) })
 );
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+  },
+  searchContainer: {
+    backgroundColor: '#e4ecf5',
+  },
+  search: {
+    backgroundColor: '#fff',
+  },
+});
 
 export default enhance(AdminUsersScreen);
