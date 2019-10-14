@@ -1,0 +1,17 @@
+{
+  "parser": "babel-eslint",
+  "plugins": ["prettier", "react-native"],
+  "extends": ["airbnb", "prettier"],
+  "globals": {
+    "__DEV__": true
+  },
+  "env": { "jest": true },
+  "rules": {
+    "react-native/no-unused-styles": 2,
+    "prettier/prettier": ["error"],
+    "import/no-unresolved": 0,
+    "no-use-before-define": ["error", { "variables": false }],
+    "react/forbid-prop-types": 0,
+    "react/jsx-filename-extension": 0
+  }
+}
