@@ -31,7 +31,9 @@ const AdminUsersScreen = ({ users, setUsers, openDrawer }) => {
   }, []);
 
   useEffect(() => {
-    setSearchResult(miniSearch(users, searchValue, ['name', 'username']));
+    if (!error) {
+      setSearchResult(miniSearch(users, searchValue, ['name', 'username']));
+    }
   }, [searchValue]);
 
   if (loading) {
@@ -53,8 +55,7 @@ const AdminUsersScreen = ({ users, setUsers, openDrawer }) => {
             onChangeText={setSearchValue}
           />
         </View>
-        {error && <Text>{error}</Text>}
-        <TableUsers data={searchValue ? searchResult : users} />
+        {error ? <Text style={styles.error}>{error}</Text> : <TableUsers data={searchValue ? searchResult : users} />}
       </SafeAreaView>
     </KeyboardAvoidingView>
   );
@@ -78,6 +79,10 @@ const enhance = connect(
 const styles = StyleSheet.create({
   full: {
     flex: 1,
+  },
+  error: {
+    padding: 20,
+    textAlign: 'center',
   },
   top: {
     paddingLeft: 8,

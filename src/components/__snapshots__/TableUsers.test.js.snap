@@ -11,6 +11,19 @@ exports[`render TableUsers 1`] = `
 >
   <View>
     <RCTScrollView
+      ListEmptyComponent={
+        <Text
+          style={
+            Object {
+              "padding": 20,
+              "textAlign": "center",
+              "width": 750,
+            }
+          }
+        >
+          Ничего не найдено
+        </Text>
+      }
       ListHeaderComponent={[Function]}
       data={
         Array [

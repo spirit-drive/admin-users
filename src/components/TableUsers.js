@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, Text, StyleSheet, FlatList } from 'react-native';
+import { View, ScrollView, Text, StyleSheet, FlatList, Dimensions } from 'react-native';
+
+const { width } = Dimensions.get('window');
 
 const RenderItem = ({ item }) => (
   <View style={styles.row}>
@@ -64,8 +66,9 @@ const Header = () => (
 const TableUsers = ({ style, data }) => (
   <ScrollView horizontal contentContainerStyle={styles.root}>
     <FlatList
+      ListEmptyComponent={<Text style={styles.empty}>Ничего не найдено</Text>}
       keyExtractor={item => `${item.name} ${item.username} ${item.email}`}
-      ListHeaderComponent={Header}
+      ListHeaderComponent={!!data.length && Header}
       data={data}
       style={[styles.table, style]}
       renderItem={RenderItem}
@@ -85,6 +88,11 @@ TableUsers.defaultProps = {
 const styles = StyleSheet.create({
   root: {
     flexDirection: 'row',
+  },
+  empty: {
+    width,
+    padding: 20,
+    textAlign: 'center',
   },
   table: {
     flex: 0,
