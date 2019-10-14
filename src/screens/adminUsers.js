@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { SearchBar } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { ScrollView, View, Text, ActivityIndicator } from 'react-native';
+import { ScrollView, View, Text, SafeAreaView } from 'react-native';
 import miniSearch from '../utils/miniSearch';
+import Loading from '../components/Loading';
 import { actions } from '../store/users';
 
 const AdminUsersScreen = ({ users, setUsers }) => {
@@ -31,12 +32,14 @@ const AdminUsersScreen = ({ users, setUsers }) => {
   }, [searchValue]);
 
   if (loading) {
-    return <ActivityIndicator />;
+    return <Loading />;
   }
 
   return (
     <View style={{ flex: 1 }}>
-      <SearchBar value={searchValue} onChangeText={setSearchValue} />
+      <SafeAreaView>
+        <SearchBar value={searchValue} onChangeText={setSearchValue} />
+      </SafeAreaView>
       <ScrollView>
         {error && <Text>{error}</Text>}
         <Text>{JSON.stringify(searchValue ? searchResult : users, null, 2)}</Text>
@@ -48,6 +51,10 @@ const AdminUsersScreen = ({ users, setUsers }) => {
 AdminUsersScreen.propTypes = {
   users: PropTypes.array.isRequired,
   setUsers: PropTypes.func.isRequired,
+};
+
+AdminUsersScreen.navigationOptions = {
+  header: null,
 };
 
 const enhance = connect(
